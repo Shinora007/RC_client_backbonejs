@@ -1,0 +1,62 @@
+{
+  "recruiters": [
+    {
+      "id": 1,
+      "name": "Hari",
+      "location": "Banglore",
+      "candidates": [
+        "ChandraBhan"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Micheal Jai Kishan",
+      "location": "Hyderabad",
+      "candidates": [
+        "John Pandey"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Rajeev Adam",
+      "location": "California",
+      "candidates": [
+        "Parijat"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Frouzan",
+      "location": "Dublin",
+      "candidates": [
+        "Ramadhir"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": 1,
+      "name": "Jag Mohan",
+      "location": "Punjab",
+      "recruiter": "Hari"
+    },
+    {
+      "id": 2,
+      "name": "Radhe Shayam",
+      "location": "Allahabad",
+      "recruiter": "Micheal Jai Kishan"
+    },
+    {
+      "id": 3,
+      "name": "Rounak",
+      "location": "Brailey",
+      "recruiter": "Rajeev Adam"
+    },
+    {
+      "id": 4,
+      "name": "Jamana Das",
+      "location": "Prayag",
+      "recruiter": "Forouzan"
+    }
+  ]
+}

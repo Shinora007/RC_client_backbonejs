@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> Model Example</title>
+  <script type="text/JavaScript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script type="text/JavaScript" src="http://underscorejs.org/underscore-min.js"></script>
+  <script type="text/javascript" src="lib/backbone/backbone-min.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content"></div>
+  <script type="text/template" id="home-template">
+    <a href="#recruiter"><button>Recruiter</button></a>
+    <a href="#candidate"><button>Candidate</button></a>
+  </script>
+
+  <script type="text/template" id="recruiter-template">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Candidates</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% _.each(recruiters.models, function(recruiter,key,list)) { %>
+          <tr>
+            <td>
+              <%= key%>
+            </td>
+            <td>
+              <%= recruiter.attributes.name %>
+            </td>
+            <td>
+              <%= recruiter.attributes.location %>
+            </td>
+            <td>
+              <%= recruiter.attributes.candidates[0] %>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </script>
+  
+  <script type="text/template" id="candidate-template">
+    <table>
+      <thead>
+      <tr>
+        <th>Sr.no.</th>
+        <th>Candidate Name</th>
+        <th>Location</th>
+        <th>Recruiter</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(candidates.models, function(candidate,key,list) { %>
+        <tr>
+          <td>
+            <%= key%>
+          </td>
+          <td>
+            <%= candidate.attributes.name %>
+          </td>
+          <td>
+            <%= candidate.attributes.location %>
+          </td>
+          <td>
+            <%= candidate.attributes.recruiter %>
+          </td>
+        </tr>
+        <% }); %>
+    </tbody>
+    </table>
+  </script>
+
+  <script type="text/javascript">
+      var Candidates = Backbone.Collection.extend({
+          url: '/candidates'
+      });
+      var Recruiters = Backbone.Collection.extend({
+        url: '/recruiters'
+      });
+      
+      var candidates = new Candidates();
+      var recruiters = new Recruiters();
+      
+      var HomeView = Backbone.View.extend({
+        el : $('.content'),
+        template : _.template($("#home-template").html()),
+        render : function() {
+          this.$el.html(this.template);
+        } 
+      });
+      
+      var CandidateView = Backbone.View.extend({
+          el: $('.content'),
+          render: function (data) {
+              var candidateTemplate = $("#candidate-template").html();
+              this.$el.html(_.template(candidateTemplate, data));
+          }
+      });
+      
+      var RecruiterView = Backbone.View.extend({
+          el: $('.content'),
+          render: function(data) {
+            console.log(data);
+            var recruiterTemplate = $("#recruiter-template").html();
+            console.log(recruiterTemplate);
+            this.$el.html(_.template(recruiterTemplate, data));
+          }
+      });
+      
+      var AppRouter = Backbone.Router.extend({
+        routes: {
+          // '' : 'home_page',
+          '' : 'recruiter_page',
+          'recruiter' : 'recruiter_page',
+          'candidate' : 'candidate_page'
+        },
+        home_page : function() {
+          var homeView = new HomeView();
+          homeView.render();
+        },
+        recruiter_page : function() {
+          var recruiterView = new RecruiterView();
+          recruiters.fetch({
+            success: function (data) {
+              recruiterView.render(data);
+            }
+          });
+        },
+        candidate_page : function() {
+          var candidateView = new CandidateView();
+          candidates.fetch({
+            success: function (data) { candidateView.render(data); }
+          });
+        }
+      });
+      new  AppRouter();
+      Backbone.history.start();
+  </script>
+
+</body>
+
+</html>
